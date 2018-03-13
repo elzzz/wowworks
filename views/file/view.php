@@ -1,13 +1,13 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\bootstrap\Carousel;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\File */
 
 $this->title = $model->name;
-$download = $model->download();
 $this->params['breadcrumbs'][] = ['label' => 'Files', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -19,7 +19,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <?= Carousel::widget(['items'=>$model->getImages(), 'options' => ['data-interval' => 'false']]); ?>
         </div>
         <div class="col-md-6">
-            <button onclick="">Download</button>
+            <a href="<?= Url::to(['file/download', 'id' => $model->id]) ?>"><button class="btn btn-primary">Download</button></a>
         </div>
     </div>
 </div>

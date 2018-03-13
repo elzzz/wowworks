@@ -88,6 +88,13 @@ class FileController extends Controller
         ]);
     }
 
+    public function actionDownload($id)
+    {
+        return $this->render('download', [
+            'model' => $this->findModel($id),
+        ]);
+    }
+
     /**
      * Finds the File model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.

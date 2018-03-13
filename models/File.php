@@ -119,10 +119,10 @@ class File extends ActiveRecord
     }
 
     public function sendFile() {
-        $file = Url::to('@webroot/upload/pdf/') . $this->name . '.pdf';
+        $file = Url::to('@webroot/result/') . $this->name . '/' . $this->name . '.zip';
 
         if (file_exists($file)) {
-            return Yii::$app->response->xSendFile($file);
+            return Yii::$app->response->sendFile($file);
         }
         Yii::$app->session->setFlash('warning', "File does not exist.");
     }

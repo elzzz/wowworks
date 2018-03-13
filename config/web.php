@@ -48,6 +48,7 @@ $config = [
             'showScriptName' => false,
             'rules' => [
                 '/file/<id:[\d-]+>' => 'file/view',
+                '/file/download/<id:[\d-]+>' => 'file/download',
             ],
         ],
     ],
