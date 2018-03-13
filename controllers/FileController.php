@@ -39,6 +39,10 @@ class FileController extends Controller
     {
         $dataProvider = new ActiveDataProvider([
             'query' => File::find(),
+            'sort' => ['defaultOrder' => ['uploaded_at' => SORT_DESC]],
+            'pagination' => [
+                'pageSize' => 10,
+            ],
         ]);
 
         return $this->render('index', [
@@ -72,6 +76,7 @@ class FileController extends Controller
         if ($model->load(Yii::$app->request->post())) {
 
             $model->pdf_file = UploadedFile::getInstance($model, 'pdf_file');
+            $model->name = uniqid();
             $model->size = round($model->pdf_file->size / (1024 * 1024), 2);
             $model->extension = $model->pdf_file->extension;
 
@@ -82,40 +87,6 @@ class FileController extends Controller
         return $this->render('upload', [
             'model' => $model,
         ]);
-    }
-
-    /**
-     * Updates an existing File model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionUpdate($id)
-    {
-        $model = $this->findModel($id);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        }
-
-        return $this->render('update', [
-            'model' => $model,
-        ]);
-    }
-
-    /**
-     * Deletes an existing File model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionDelete($id)
-    {
-        $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
     }
 
     /**

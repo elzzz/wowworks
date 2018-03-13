@@ -27,5 +27,5 @@ services:
         depends_on:
             - pg
         working_dir: /opt/ww
-        entrypoint: bash -c "chmod -R 777 * && composer install -v && php /opt/ww/yii serve 0.0.0.0:8080"
-#        entrypoint: bash -c "chmod -R 777 * && composer install -v && apt-get update && apt-get install -y php-imagick imagemagick ghostscript zip && php /opt/ww/yii serve 0.0.0.0:8080"
+#        entrypoint: bash -c "chmod -R 777 * && composer install -v && php /opt/ww/yii serve 0.0.0.0:8080"
+        entrypoint: bash -c "chmod -R 777 * && composer install -v && apt-get update && apt-get install -y imagemagick ghostscript zip && php /opt/ww/yii serve 0.0.0.0:8080"
