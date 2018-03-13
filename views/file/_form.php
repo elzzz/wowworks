@@ -12,7 +12,7 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'pdf_file')->fileInput() ?>
+    <?= $form->field($model, 'pdfFile')->fileInput() ?>
 
     <div class="form-group">
         <?= Html::submitButton('Upload', ['class' => 'btn btn-success']) ?>

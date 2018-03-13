@@ -9,7 +9,6 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\web\UploadedFile;
-use yii\db\Expression;
 
 /**
  * FileController implements the CRUD actions for File model.
@@ -75,10 +74,10 @@ class FileController extends Controller
 
         if ($model->load(Yii::$app->request->post())) {
 
-            $model->pdf_file = UploadedFile::getInstance($model, 'pdf_file');
+            $model->pdfFile = UploadedFile::getInstance($model, 'pdfFile');
             $model->name = uniqid();
-            $model->size = round($model->pdf_file->size / (1024 * 1024), 2);
-            $model->extension = $model->pdf_file->extension;
+            $model->size = round($model->pdfFile->size / (1024 * 1024), 2);
+            $model->extension = $model->pdfFile->extension;
 
             if ($model->save()) {
                 return $this->redirect(['view', 'id' => $model->id]);

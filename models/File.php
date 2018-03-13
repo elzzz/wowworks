@@ -18,7 +18,7 @@ use yii\helpers\Url;
  */
 class File extends ActiveRecord
 {
-    public $pdf_file;
+    public $pdfFile;
 
     /**
      * @inheritdoc
@@ -39,7 +39,7 @@ class File extends ActiveRecord
             [['size'], 'double'],
             [['uploaded_at'], 'safe'],
             [['name', 'extension'], 'string', 'max' => 255],
-            [['pdf_file'], 'file', 'skipOnEmpty' => false, 'extensions' => 'pdf', 'maxSize' => 1024 * 1024 * 50],
+            [['pdfFile'], 'file', 'skipOnEmpty' => false, 'extensions' => 'pdf', 'maxSize' => 1024 * 1024 * 50],
         ];
     }
 
@@ -54,25 +54,25 @@ class File extends ActiveRecord
             'extension' => 'Extension',
             'size' => 'Size (MB)',
             'uploaded_at' => 'Uploaded At (UTC)',
-            'pdf_file' => 'PDF File',
+            'pdfFile' => 'PDF File',
         ];
     }
 
     public function upload()
     {
-        if ($this->pdf_file) {
+        if ($this->pdfFile) {
             $path = Url::to('@webroot/upload/pdf/');
-            $filename = strtolower($this->name) . '.pdf';
-            $this->pdf_file->saveAs($path . $filename);
+            $fileName = strtolower($this->name) . '.pdf';
+            $this->pdfFile->saveAs($path . $fileName);
 
-            $pdf = new \Imagick($path . $filename);
+            $pdf = new \Imagick($path . $fileName);
             $pages = $pdf->getNumberImages();
             if ($pages <= 20) {
                 Yii::$app->session->setFlash('success', "File Uploaded Successfully!");
                 return true;
             } else {
                 Yii::$app->session->setFlash('danger', "Your PDF has to be less than 20 pages!");
-                unlink($path . $filename);
+                unlink($path . $fileName);
                 return false;
             }
         }
@@ -81,16 +81,16 @@ class File extends ActiveRecord
 
     public function convert()
     {
-        if ($this->pdf_file) {
-            $pdf_path = Url::to('@webroot/upload/pdf/');
-            $result_path = Url::to('@webroot/result/');
-            $filename = strtolower($this->name) . '.pdf';
+        if ($this->pdfFile) {
+            $pdfPath = Url::to('@webroot/upload/pdf/');
+            $resultPath = Url::to('@webroot/result/');
+            $fileName = strtolower($this->name) . '.pdf';
 
-            $pdf = new \Imagick($pdf_path . $filename);
+            $pdf = new \Imagick($pdfPath . $fileName);
             $pdf->setImageFormat('jpg');
-            mkdir($result_path . $this->name .'/images/', 0777, true);
+            mkdir($resultPath . $this->name .'/images/', 0777, true);
             foreach($pdf as $i=>$img) {
-                $img->writeImage($result_path. $this->name .'/images/'.($i+1).'.jpg');
+                $img->writeImage($resultPath. $this->name .'/images/'.($i+1).'.jpg');
             }
             return true;
         }
@@ -129,9 +129,9 @@ class File extends ActiveRecord
 
     public function createZip(){
         $path = Url::to('@webroot/result/') . $this->name;
-        $zip_name = $this->name . '.zip';
+        $zipName = $this->name . '.zip';
 
-        shell_exec('cd '.$path.' && zip -r '.$zip_name.' .');
+        shell_exec('cd '.$path.' && zip -r '.$zipName.' .');
     }
 
     public function download() {
