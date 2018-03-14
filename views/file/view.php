@@ -12,7 +12,6 @@ $this->title = $model->name;
 <div class="file-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
-
     <div class="row">
         <div class="col-md-6">
             <?= Carousel::widget(['items'=>$model->getImages(), 'options' => ['data-interval' => 'false']]); ?>

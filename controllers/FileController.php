@@ -2,7 +2,6 @@
 
 namespace app\controllers;
 
-use app\models\DeleteFromFile;
 use Yii;
 use app\models\File;
 use yii\data\ActiveDataProvider;
@@ -38,9 +37,9 @@ class FileController extends Controller
     public function actionIndex()
     {
 
-        Yii::$app->queue->push(new DeleteFromFile());
+//        Yii::$app->queue->push(new DeleteFromFile());
         $dataProvider = new ActiveDataProvider([
-            'query' => File::find(),
+            'query' => File::find()->select('*')->where('CURRENT_TIMESTAMP <= deleted_at'),
             'sort' => ['defaultOrder' => ['uploaded_at' => SORT_DESC]],
             'pagination' => [
                 'pageSize' => 10,
@@ -110,9 +109,13 @@ class FileController extends Controller
     protected function findModel($id)
     {
         if (($model = File::findOne($id)) !== null) {
-            return $model;
+            if (strtotime('now') < strtotime($model->deleted_at)){
+                return $model;
+            } else {
+                throw new NotFoundHttpException('File has been deleted.');
+            }
+        } else {
+            throw new NotFoundHttpException('The requested page does not exist.');
         }
-
-        throw new NotFoundHttpException('The requested page does not exist.');
     }
 }

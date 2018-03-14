@@ -18,6 +18,7 @@ class m180312_151917_create_file_table extends Migration
             'extension' => $this->string()->notNull(),
             'size' => $this->float()->notNull(),
             'uploaded_at' => $this->timestamp()->notNull()->defaultExpression("CURRENT_TIMESTAMP"),
+            'deleted_at' => $this->timestamp()->notNull()->defaultExpression("CURRENT_TIMESTAMP + (30 * INTERVAL '1 minute')"),
         ]);
     }
 

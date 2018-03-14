@@ -12,7 +12,7 @@ class DeleteFromFile extends BaseObject implements JobInterface {
 
     public function execute($queue)
     {
-        $files = Yii::$app->db->createCommand('SELECT name FROM file WHERE uploaded_at < (CURRENT_TIMESTAMP - (30 * INTERVAL \'1 minute\'))')->queryAll(PDO::FETCH_COLUMN);
+        $files = Yii::$app->db->createCommand('SELECT name FROM file WHERE CURRENT_TIMESTAMP > deleted_at')->queryAll(PDO::FETCH_COLUMN);
         $path = Url::to('@webroot/result/');
 
         foreach ($files as $file) {

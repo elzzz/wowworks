@@ -16,6 +16,7 @@ use yii\db\mssql\PDO;
  * @property string $extension
  * @property int $size
  * @property string $uploaded_at
+ * @property string $deleted_at
  */
 class File extends ActiveRecord
 {
@@ -38,7 +39,7 @@ class File extends ActiveRecord
             [['name', 'extension', 'size'], 'required'],
             [['size'], 'default', 'value' => null],
             [['size'], 'double'],
-            [['uploaded_at'], 'safe'],
+            [['uploaded_at', 'deleted_at'], 'safe'],
             [['name', 'extension'], 'string', 'max' => 255],
             [['pdfFile'], 'file', 'skipOnEmpty' => false, 'extensions' => 'pdf', 'maxSize' => 1024 * 1024 * 50],
         ];
@@ -55,6 +56,7 @@ class File extends ActiveRecord
             'extension' => 'Extension',
             'size' => 'Size (MB)',
             'uploaded_at' => 'Uploaded At (UTC)',
+            'deleted_at' => 'Should be deleted at (UTC)',
             'pdfFile' => 'PDF File',
         ];
     }
