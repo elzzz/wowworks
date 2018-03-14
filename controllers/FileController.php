@@ -90,6 +90,8 @@ class FileController extends Controller
 
     public function actionDownload($id)
     {
+        $this->layout = false;
+
         return $this->render('download', [
             'model' => $this->findModel($id),
         ]);

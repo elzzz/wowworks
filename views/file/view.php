@@ -8,8 +8,8 @@ use yii\bootstrap\Carousel;
 /* @var $model app\models\File */
 
 $this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => 'Files', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
+//$this->params['breadcrumbs'][] = ['label' => 'Files', 'url' => ['index']];
+//$this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="file-view">
 

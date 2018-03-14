@@ -118,6 +118,39 @@ class File extends ActiveRecord
         return $images;
     }
 
+    public function getResultImages() {
+        $myDirectory = opendir(Url::to('@webroot/result/') . $this->name .'/images');
+
+        while($entryName = readdir($myDirectory)) {
+            if ($entryName != '.' && $entryName != '..') {
+                $dirArray[] = $entryName;
+            }
+        }
+
+        closedir($myDirectory);
+
+        $indexCount = count($dirArray);
+        if ($indexCount >= 1){
+            unset($images);
+            foreach ($dirArray as $file){
+                $images[] = '<img src="images/'.$file.'"/>';
+            }
+        }
+        return $images;
+    }
+
+    public function getResultAssets() {
+        $defaultAssets = Url::to('@webroot/default_assets');
+        $assets = Url::to('@webroot/result/') . $this->name . '/assets';
+
+        shell_exec('cp -r '.$defaultAssets.' '.$assets);
+    }
+
+    public function getResultPath() {
+        $path = Url::to('@webroot/result/') . $this->name . '/index.html';
+        return $path;
+    }
+
     public function sendFile() {
         $file = Url::to('@webroot/result/') . $this->name . '/' . $this->name . '.zip';
 
