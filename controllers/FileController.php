@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\DeleteFromFile;
 use Yii;
 use app\models\File;
 use yii\data\ActiveDataProvider;
@@ -36,6 +37,8 @@ class FileController extends Controller
      */
     public function actionIndex()
     {
+
+        Yii::$app->queue->push(new DeleteFromFile());
         $dataProvider = new ActiveDataProvider([
             'query' => File::find(),
             'sort' => ['defaultOrder' => ['uploaded_at' => SORT_DESC]],

@@ -8,12 +8,11 @@ use yii\bootstrap\Carousel;
 /* @var $model app\models\File */
 
 $this->title = $model->name;
-//$this->params['breadcrumbs'][] = ['label' => 'Files', 'url' => ['index']];
-//$this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="file-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
+
     <div class="row">
         <div class="col-md-6">
             <?= Carousel::widget(['items'=>$model->getImages(), 'options' => ['data-interval' => 'false']]); ?>
