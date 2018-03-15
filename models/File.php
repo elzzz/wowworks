@@ -60,6 +60,7 @@ class File extends ActiveRecord
             'deleted_at' => 'Should be deleted at (UTC)',
             'pdfFile' => 'PDF File',
             'image' => 'Image',
+            'json' => 'Link to JSON',
         ];
     }
 
