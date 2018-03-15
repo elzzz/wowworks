@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+
 use Yii;
 use app\models\File;
 use yii\data\ActiveDataProvider;
@@ -9,6 +10,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\web\UploadedFile;
+use app\modules\api\models\Image;
 
 /**
  * FileController implements the CRUD actions for File model.
@@ -73,7 +75,6 @@ class FileController extends Controller
     {
         $model = new File();
 
-
         if ($model->load(Yii::$app->request->post())) {
 
             $model->pdfFile = UploadedFile::getInstance($model, 'pdfFile');
@@ -82,6 +83,15 @@ class FileController extends Controller
             $model->extension = $model->pdfFile->extension;
 
             if ($model->save()) {
+
+                foreach ($model->getImages() as $i=>$image) {
+                    $modelImage = new Image();
+                    $modelImage->url = $image;
+                    $modelImage->file_id = $model->id;
+                    $modelImage->number = $i+1;
+                    $modelImage->save();
+                }
+
                 return $this->redirect(['view', 'id' => $model->id]);
             }
         }
@@ -96,6 +106,15 @@ class FileController extends Controller
 
         return $this->render('download', [
             'model' => $this->findModel($id),
+        ]);
+    }
+
+    public function actionImage($id, $img_id)
+    {
+        $this->layout = false;
+
+        return $this->render('image', [
+            'model' => $this->findImage($id, $img_id),
         ]);
     }
 
@@ -117,5 +136,14 @@ class FileController extends Controller
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+
+    protected function findImage($id, $img_id) {
+        if (($modelImage = Image::findOne(['file_id'=>$id, 'number'=>$img_id])) !== null) {
+            return $modelImage;
+        } else {
+            throw new NotFoundHttpException('No such image.');
+        }
+
     }
 }

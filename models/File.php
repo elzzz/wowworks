@@ -5,8 +5,7 @@ namespace app\models;
 use Yii;
 use yii\db\ActiveRecord;
 use yii\helpers\Url;
-use yii\db\mssql\PDO;
-
+use app\modules\api\models\Image;
 
 /**
  * This is the model class for table "file".
@@ -17,6 +16,8 @@ use yii\db\mssql\PDO;
  * @property int $size
  * @property string $uploaded_at
  * @property string $deleted_at
+ *
+ * @property Image $image
  */
 class File extends ActiveRecord
 {
@@ -58,6 +59,7 @@ class File extends ActiveRecord
             'uploaded_at' => 'Uploaded At (UTC)',
             'deleted_at' => 'Should be deleted at (UTC)',
             'pdfFile' => 'PDF File',
+            'image' => 'Image',
         ];
     }
 
@@ -100,7 +102,7 @@ class File extends ActiveRecord
         return false;
     }
 
-    public function getImages() {
+    public function getImagesCarousel() {
         $myDirectory = opendir(Url::to('@webroot/result/') . $this->name .'/images');
 
         while($entryName = readdir($myDirectory)) {
@@ -116,6 +118,27 @@ class File extends ActiveRecord
             unset($images);
             foreach ($dirArray as $file){
                 $images[] = '<img src="'.Url::to('/result/') . $this->name . '/images/'.$file.'"/>';
+            }
+        }
+        return $images;
+    }
+
+    public function getImages() {
+        $myDirectory = opendir(Url::to('@webroot/result/') . $this->name .'/images');
+
+        while($entryName = readdir($myDirectory)) {
+            if ($entryName != '.' && $entryName != '..') {
+                $dirArray[] = $entryName;
+            }
+        }
+
+        closedir($myDirectory);
+
+        $indexCount = count($dirArray);
+        if ($indexCount >= 1){
+            unset($images);
+            foreach ($dirArray as $file){
+                $images[] = Url::to('@web/result/') . $this->name . '/images/'.$file;
             }
         }
         return $images;
@@ -173,6 +196,20 @@ class File extends ActiveRecord
     public function download() {
         $this->createZip();
         $this->sendFile();
+    }
+
+    public function getImage()
+    {
+        return $this->hasMany(Image::className(), ['file_id' => 'id']);
+    }
+
+    public function getImageUrl() {
+        $img = '';
+        foreach ($this->image as $image) {
+            $img .= $image->url . ', ';
+        }
+        $img = rtrim($img, ', ');
+        return $img;
     }
 
     public function beforeSave($insert)

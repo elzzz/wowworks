@@ -14,7 +14,7 @@ $this->title = $model->name;
     <h1><?= Html::encode($this->title) ?></h1>
     <div class="row">
         <div class="col-md-6">
-            <?= Carousel::widget(['items'=>$model->getImages(), 'options' => ['data-interval' => 'false']]); ?>
+            <?= Carousel::widget(['items'=>$model->getImagesCarousel(), 'options' => ['data-interval' => 'false']]); ?>
         </div>
         <div class="col-md-6">
             <a href="<?= Url::to(['file/download', 'id' => $model->id]) ?>"><button class="btn btn-primary">Download</button></a>

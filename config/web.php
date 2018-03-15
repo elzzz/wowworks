@@ -11,6 +11,11 @@ $config = [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
     ],
+    'modules' => [
+        'api' => [
+            'class' => 'app\modules\api\Api',
+        ],
+    ],
     'components' => [
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
@@ -53,6 +58,7 @@ $config = [
             'rules' => [
                 '/file/<id:[\d-]+>' => 'file/view',
                 '/file/download/<id:[\d-]+>' => 'file/download',
+                '/file/<id:[\d-]+>/<img_id:[\d-]+>' => 'file/image',
             ],
         ],
     ],
