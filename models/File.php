@@ -123,7 +123,7 @@ class File extends ActiveRecord
         return $images;
     }
 
-    public function getImages() {
+    public function getImagesPath() {
         $myDirectory = opendir(Url::to('@webroot/result/') . $this->name .'/images');
 
         while($entryName = readdir($myDirectory)) {
@@ -198,19 +198,23 @@ class File extends ActiveRecord
         $this->sendFile();
     }
 
-    public function getImage()
-    {
-        return $this->hasMany(Image::className(), ['file_id' => 'id']);
+    public function getJson() {
+        return Url::to('@web/api/image/json/'.$this->id, true);
     }
-
-    public function getImageUrl() {
-        $img = '';
-        foreach ($this->image as $image) {
-            $img .= $image->url . ', ';
-        }
-        $img = rtrim($img, ', ');
-        return $img;
-    }
+//
+//    public function getImage()
+//    {
+//        return $this->hasMany(Image::className(), ['file_id' => 'id']);
+//    }
+//
+//    public function getImageUrl() {
+//        $img = '';
+//        foreach ($this->image as $image) {
+//            $img .= $image->url . ', ';
+//        }
+//        $img = rtrim($img, ', ');
+//        return $img;
+//    }
 
     public function beforeSave($insert)
     {

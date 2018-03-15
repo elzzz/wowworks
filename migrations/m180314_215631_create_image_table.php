@@ -15,6 +15,7 @@ class m180314_215631_create_image_table extends Migration
         $this->createTable('image', [
             'id' => $this->primaryKey(),
             'file_id' => $this->integer()->notNull(),
+            'path' => $this->text(),
             'url' => $this->text(),
             'number' => $this->integer()->notNull(),
         ]);

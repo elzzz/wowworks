@@ -9,14 +9,14 @@ use app\modules\api\models\Image;
 class ImageController extends \yii\web\Controller
 {
 
-    public function actionListImage() {
+    public function actionJson($id) {
         Yii::$app->response->format = Response::FORMAT_JSON;
 
-        $image = Image::find()->all();
-        if(count($image) > 0) {
-            return array('status' => true, 'data' => $image);
+        $images = Image::find()->select('url')->where(['file_id'=>$id])->all();
+        if(count($images) > 0) {
+            return array('images' => $images);
         } else {
-            return array('status' => false, 'data' => 'No images found.');
+            return array('images' => 'No images found');
         }
     }
 

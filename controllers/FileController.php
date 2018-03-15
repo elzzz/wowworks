@@ -6,6 +6,7 @@ namespace app\controllers;
 use Yii;
 use app\models\File;
 use yii\data\ActiveDataProvider;
+use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -84,11 +85,12 @@ class FileController extends Controller
 
             if ($model->save()) {
 
-                foreach ($model->getImages() as $i=>$image) {
+                foreach ($model->getImagesPath() as $i=>$image) {
                     $modelImage = new Image();
-                    $modelImage->url = $image;
+                    $modelImage->path = $image;
                     $modelImage->file_id = $model->id;
                     $modelImage->number = $i+1;
+                    $modelImage->url = Url::to('@web/file/'.$model->id.'/'.($i+1), true);
                     $modelImage->save();
                 }
 

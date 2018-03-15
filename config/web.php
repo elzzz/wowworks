@@ -59,6 +59,7 @@ $config = [
                 '/file/<id:[\d-]+>' => 'file/view',
                 '/file/download/<id:[\d-]+>' => 'file/download',
                 '/file/<id:[\d-]+>/<img_id:[\d-]+>' => 'file/image',
+                '/api/image/json/<id:[\d-]+>' => 'api/image/json',
             ],
         ],
     ],

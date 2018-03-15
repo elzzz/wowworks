@@ -12,6 +12,7 @@ use app\models\File;
  * @property int $file_id
  * @property string $url
  * @property int $number
+ * @property string $path
  *
  * @property File $file
  */
@@ -34,7 +35,7 @@ class Image extends \yii\db\ActiveRecord
             [['file_id', 'number'], 'required'],
             [['file_id'], 'default', 'value' => null],
             [['file_id', 'number'], 'integer'],
-            [['url'], 'string'],
+            [['url', 'path'], 'string'],
             [['file_id'], 'exist', 'skipOnError' => true, 'targetClass' => File::className(), 'targetAttribute' => ['file_id' => 'id']],
         ];
     }
@@ -47,8 +48,9 @@ class Image extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'file_id' => 'File ID',
-            'url' => 'Url',
-            'number' => 'Number of the page'
+            'url' => 'URL',
+            'number' => 'Number of the page',
+            'path' => 'Path to file'
         ];
     }
 
