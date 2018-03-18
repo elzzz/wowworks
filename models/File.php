@@ -16,7 +16,6 @@ use yii\helpers\Html;
  * @property int $size
  * @property string $uploaded_at
  * @property string $deleted_at
- *
  */
 class File extends ActiveRecord
 {
@@ -65,6 +64,7 @@ class File extends ActiveRecord
 
     /**
      * Uploads pdf file for File model.
+     *
      * @return mixed
      */
     public function upload()
@@ -90,6 +90,7 @@ class File extends ActiveRecord
 
     /**
      * Converts each page of pdf file into images.
+     *
      * @return mixed
      */
     public function convert()
@@ -112,6 +113,7 @@ class File extends ActiveRecord
 
     /**
      * Gets converted file images.
+     *
      * @return array
      */
     public function getImagesCarousel()
@@ -138,6 +140,7 @@ class File extends ActiveRecord
 
     /**
      * Gets converted file's images path.
+     *
      * @return array
      */
     public function getImagesPath()
@@ -164,6 +167,7 @@ class File extends ActiveRecord
 
     /**
      * Gets converted file's images.
+     *
      * @return array
      */
     public function getResultImages()
@@ -201,6 +205,7 @@ class File extends ActiveRecord
 
     /**
      * Gets result path of the File model.
+     *
      * @return mixed
      */
     public function getResultPath()
@@ -211,6 +216,7 @@ class File extends ActiveRecord
 
     /**
      * Sends result archive of the File model.
+     *
      * @return mixed
      */
     public function sendFile()
