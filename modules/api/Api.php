@@ -2,7 +2,7 @@
 
 namespace app\modules\api;
 
-use yii\gii\Module;
+use yii\base\Module;
 
 /**
  * api module definition class
