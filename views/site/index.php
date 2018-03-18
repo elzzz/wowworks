@@ -4,15 +4,15 @@ use yii\helpers\Html;
 
 /* @var $this yii\web\View */
 
-$this->title = 'My Yii Application';
+$this->title = Yii::t('app', 'My Yii Application');
 ?>
 <div class="site-index">
 
     <div class="jumbotron">
-        <h1>Here is PDF converter!</h1>
+        <h1><?= Yii::t('app', 'Here is PDF converter!') ?></h1>
 
-        <p class="lead">You can convert your PDF to HTML slider.</p>
+        <p class="lead"><?= Yii::t('app', 'You can convert your PDF to HTML slider.') ?></p>
 
-        <?= Html::a('Convert', ['file/upload'], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a(Yii::t('app', 'Convert'), ['file/upload'], ['class' => 'btn btn-primary']) ?>
     </div>
 </div>

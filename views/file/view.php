@@ -17,7 +17,9 @@ $this->title = $model->name;
             <?= Carousel::widget(['items'=>$model->getImagesCarousel(), 'options' => ['data-interval' => 'false']]); ?>
         </div>
         <div class="col-md-6">
-            <?= Html::a('Download', ['file/download', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+            <?=
+            Html::a(Yii::t('app', 'Download'), ['file/download', 'id' => $model->id], ['class' => 'btn btn-primary'])
+            ?>
         </div>
     </div>
 </div>

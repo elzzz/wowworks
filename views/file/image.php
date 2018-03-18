@@ -7,6 +7,8 @@ use yii\helpers\Html;
 
 ?>
 
-<?php echo Html::img($model->path) ?>
+<?php
+
+    echo Html::img($model->path);
 
 

@@ -51,15 +51,15 @@ class File extends ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'name' => 'Name',
-            'extension' => 'Extension',
-            'size' => 'Size (MB)',
-            'uploaded_at' => 'Uploaded At (UTC)',
-            'deleted_at' => 'Should be deleted at (UTC)',
-            'pdfFile' => 'PDF File',
-            'image' => 'Image',
-            'json' => 'Link to JSON',
+            'id' => Yii::t('app', 'ID'),
+            'name' => Yii::t('app', 'Name'),
+            'extension' => Yii::t('app', 'Extension'),
+            'size' => Yii::t('app', 'Size (MB)'),
+            'uploaded_at' => Yii::t('app', 'Uploaded At (UTC)'),
+            'deleted_at' => Yii::t('app', 'Should be deleted at (UTC)'),
+            'pdfFile' => Yii::t('app', 'PDF File'),
+            'image' => Yii::t('app', 'Image'),
+            'json' => Yii::t('app', 'Link to JSON'),
         ];
     }
 
@@ -77,10 +77,10 @@ class File extends ActiveRecord
             $pdf = new \Imagick($path . $fileName);
             $pages = $pdf->getNumberImages();
             if ($pages <= 20) {
-                Yii::$app->session->setFlash('success', "File Uploaded Successfully!");
+                Yii::$app->session->setFlash('success', Yii::t('app', "File Uploaded Successfully!"));
                 return true;
             } else {
-                Yii::$app->session->setFlash('danger', "Your PDF has to be less than 20 pages!");
+                Yii::$app->session->setFlash('danger', Yii::t('app', "Your PDF has to be less than 20 pages!"));
                 unlink($path . $fileName);
                 return false;
             }
@@ -220,7 +220,7 @@ class File extends ActiveRecord
         if (file_exists($file)) {
             return Yii::$app->response->sendFile($file);
         }
-        return Yii::$app->session->setFlash('warning', "File does not exist.");
+        return Yii::$app->session->setFlash('warning', Yii::t('app', "File does not exist."));
     }
 
     /**
