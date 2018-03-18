@@ -13,7 +13,7 @@ class m180314_215631_create_image_table extends Migration
     public function up()
     {
         $this->createTable('image', [
-            'id' => $this->primaryKey(),
+            'id' => $this->bigPrimaryKey(),
             'file_id' => $this->integer()->notNull(),
             'path' => $this->text(),
             'url' => $this->text(),

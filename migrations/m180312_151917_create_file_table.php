@@ -13,12 +13,13 @@ class m180312_151917_create_file_table extends Migration
     public function up()
     {
         $this->createTable('file', [
-            'id' => $this->primaryKey(),
+            'id' => $this->bigPrimaryKey(),
             'name' => $this->string()->notNull(),
             'extension' => $this->string()->notNull(),
             'size' => $this->float()->notNull(),
             'uploaded_at' => $this->timestamp()->notNull()->defaultExpression("CURRENT_TIMESTAMP"),
-            'deleted_at' => $this->timestamp()->notNull()->defaultExpression("CURRENT_TIMESTAMP + (30 * INTERVAL '1 minute')"),
+            'deleted_at' => $this->timestamp()->notNull()
+                ->defaultExpression("CURRENT_TIMESTAMP + (30 * INTERVAL '1 minute')"),
         ]);
     }
 

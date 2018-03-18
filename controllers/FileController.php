@@ -2,16 +2,15 @@
 
 namespace app\controllers;
 
-
-use Yii;
 use app\models\File;
+use app\modules\api\models\Image;
+use Yii;
 use yii\data\ActiveDataProvider;
+use yii\filters\VerbFilter;
 use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
 use yii\web\UploadedFile;
-use app\modules\api\models\Image;
 
 /**
  * FileController implements the CRUD actions for File model.
@@ -39,8 +38,6 @@ class FileController extends Controller
      */
     public function actionIndex()
     {
-
-//        Yii::$app->queue->push(new DeleteFromFile());
         $dataProvider = new ActiveDataProvider([
             'query' => File::find()->select('*')->where('CURRENT_TIMESTAMP <= deleted_at'),
             'sort' => ['defaultOrder' => ['uploaded_at' => SORT_DESC]],
@@ -77,15 +74,12 @@ class FileController extends Controller
         $model = new File();
 
         if ($model->load(Yii::$app->request->post())) {
-
             $model->pdfFile = UploadedFile::getInstance($model, 'pdfFile');
             $model->name = uniqid();
             $model->size = round($model->pdfFile->size / (1024 * 1024), 2);
             $model->extension = $model->pdfFile->extension;
-
             if ($model->save()) {
-
-                foreach ($model->getImagesPath() as $i=>$image) {
+                foreach ($model->getImagesPath() as $i => $image) {
                     $modelImage = new Image();
                     $modelImage->path = $image;
                     $modelImage->file_id = $model->id;
@@ -102,6 +96,12 @@ class FileController extends Controller
         ]);
     }
 
+    /**
+     * Downloads zip archive of File model.
+     * @param integer $id
+     * @return mixed
+     * @throws NotFoundHttpException if the model cannot be found
+     */
     public function actionDownload($id)
     {
         $this->layout = false;
@@ -111,12 +111,19 @@ class FileController extends Controller
         ]);
     }
 
-    public function actionImage($id, $img_id)
+    /**
+     * Shows picture selected file of File model.
+     * @param integer $id
+     * @param integer $imgId
+     * @return mixed
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    public function actionImage($id, $imgId)
     {
         $this->layout = false;
 
         return $this->render('image', [
-            'model' => $this->findImage($id, $img_id),
+            'model' => $this->findImage($id, $imgId),
         ]);
     }
 
@@ -130,7 +137,7 @@ class FileController extends Controller
     protected function findModel($id)
     {
         if (($model = File::findOne($id)) !== null) {
-            if (strtotime('now') < strtotime($model->deleted_at)){
+            if (strtotime('now') < strtotime($model->deleted_at)) {
                 return $model;
             } else {
                 throw new NotFoundHttpException('File has been deleted.');
@@ -140,12 +147,20 @@ class FileController extends Controller
         }
     }
 
-    protected function findImage($id, $img_id) {
-        if (($modelImage = Image::findOne(['file_id'=>$id, 'number'=>$img_id])) !== null) {
+    /**
+     * Finds the Image model based on its primary key value and foreign key of the File model.
+     * If the model is not found, a 404 HTTP exception will be thrown.
+     * @param integer $id
+     * @param integer $imgId
+     * @return Image the loaded model
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    protected function findImage($id, $imgId)
+    {
+        if (($modelImage = Image::findOne(['file_id'=>$id, 'number'=>$imgId])) !== null) {
             return $modelImage;
         } else {
             throw new NotFoundHttpException('No such image.');
         }
-
     }
 }

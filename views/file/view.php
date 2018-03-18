@@ -1,8 +1,8 @@
 <?php
 
+use yii\bootstrap\Carousel;
 use yii\helpers\Html;
 use yii\helpers\Url;
-use yii\bootstrap\Carousel;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\File */
@@ -17,7 +17,7 @@ $this->title = $model->name;
             <?= Carousel::widget(['items'=>$model->getImagesCarousel(), 'options' => ['data-interval' => 'false']]); ?>
         </div>
         <div class="col-md-6">
-            <a href="<?= Url::to(['file/download', 'id' => $model->id]) ?>"><button class="btn btn-primary">Download</button></a>
+            <?= Html::a('Download', ['file/download', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         </div>
     </div>
 </div>

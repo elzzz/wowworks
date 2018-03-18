@@ -5,7 +5,7 @@ namespace app\models;
 use Yii;
 use yii\db\ActiveRecord;
 use yii\helpers\Url;
-use app\modules\api\models\Image;
+use yii\helpers\Html;
 
 /**
  * This is the model class for table "file".
@@ -17,7 +17,6 @@ use app\modules\api\models\Image;
  * @property string $uploaded_at
  * @property string $deleted_at
  *
- * @property Image $image
  */
 class File extends ActiveRecord
 {
@@ -64,6 +63,10 @@ class File extends ActiveRecord
         ];
     }
 
+    /**
+     * Uploads pdf file for File model.
+     * @return mixed
+     */
     public function upload()
     {
         if ($this->pdfFile) {
@@ -85,6 +88,10 @@ class File extends ActiveRecord
         return false;
     }
 
+    /**
+     * Converts each page of pdf file into images.
+     * @return mixed
+     */
     public function convert()
     {
         if ($this->pdfFile) {
@@ -95,7 +102,7 @@ class File extends ActiveRecord
             $pdf = new \Imagick($pdfPath . $fileName);
             $pdf->setImageFormat('jpg');
             mkdir($resultPath . $this->name .'/images/', 0777, true);
-            foreach($pdf as $i=>$img) {
+            foreach ($pdf as $i => $img) {
                 $img->writeImage($resultPath. $this->name .'/images/'.($i+1).'.jpg');
             }
             return true;
@@ -103,10 +110,15 @@ class File extends ActiveRecord
         return false;
     }
 
-    public function getImagesCarousel() {
+    /**
+     * Gets converted file images.
+     * @return array
+     */
+    public function getImagesCarousel()
+    {
         $myDirectory = opendir(Url::to('@webroot/result/') . $this->name .'/images');
 
-        while($entryName = readdir($myDirectory)) {
+        while ($entryName = readdir($myDirectory)) {
             if ($entryName != '.' && $entryName != '..') {
                 $dirArray[] = $entryName;
             }
@@ -115,19 +127,24 @@ class File extends ActiveRecord
         closedir($myDirectory);
 
         $indexCount = count($dirArray);
-        if ($indexCount >= 1){
+        if ($indexCount >= 1) {
             unset($images);
-            foreach ($dirArray as $file){
+            foreach ($dirArray as $file) {
                 $images[] = '<img src="'.Url::to('/result/') . $this->name . '/images/'.$file.'"/>';
             }
         }
         return $images;
     }
 
-    public function getImagesPath() {
+    /**
+     * Gets converted file's images path.
+     * @return array
+     */
+    public function getImagesPath()
+    {
         $myDirectory = opendir(Url::to('@webroot/result/') . $this->name .'/images');
 
-        while($entryName = readdir($myDirectory)) {
+        while ($entryName = readdir($myDirectory)) {
             if ($entryName != '.' && $entryName != '..') {
                 $dirArray[] = $entryName;
             }
@@ -136,19 +153,24 @@ class File extends ActiveRecord
         closedir($myDirectory);
 
         $indexCount = count($dirArray);
-        if ($indexCount >= 1){
+        if ($indexCount >= 1) {
             unset($images);
-            foreach ($dirArray as $file){
+            foreach ($dirArray as $file) {
                 $images[] = Url::to('@web/result/') . $this->name . '/images/'.$file;
             }
         }
         return $images;
     }
 
-    public function getResultImages() {
+    /**
+     * Gets converted file's images.
+     * @return array
+     */
+    public function getResultImages()
+    {
         $myDirectory = opendir(Url::to('@webroot/result/') . $this->name .'/images');
 
-        while($entryName = readdir($myDirectory)) {
+        while ($entryName = readdir($myDirectory)) {
             if ($entryName != '.' && $entryName != '..') {
                 $dirArray[] = $entryName;
             }
@@ -157,66 +179,81 @@ class File extends ActiveRecord
         closedir($myDirectory);
 
         $indexCount = count($dirArray);
-        if ($indexCount >= 1){
+        if ($indexCount >= 1) {
             unset($images);
-            foreach ($dirArray as $file){
-                $images[] = '<img src="images/'.$file.'"/>';
+            foreach ($dirArray as $file) {
+                $images[] = Html::img('images/'.$file);
             }
         }
         return $images;
     }
 
-    public function getResultAssets() {
+    /**
+     * Copies assets to result folder.
+     */
+    public function getResultAssets()
+    {
         $defaultAssets = Url::to('@webroot/default_assets');
         $assets = Url::to('@webroot/result/') . $this->name . '/assets';
 
         shell_exec('cp -r '.$defaultAssets.' '.$assets);
     }
 
-    public function getResultPath() {
+    /**
+     * Gets result path of the File model.
+     * @return mixed
+     */
+    public function getResultPath()
+    {
         $path = Url::to('@webroot/result/') . $this->name . '/index.html';
         return $path;
     }
 
-    public function sendFile() {
+    /**
+     * Sends result archive of the File model.
+     * @return mixed
+     */
+    public function sendFile()
+    {
         $file = Url::to('@webroot/result/') . $this->name . '/' . $this->name . '.zip';
 
         if (file_exists($file)) {
             return Yii::$app->response->sendFile($file);
         }
-        Yii::$app->session->setFlash('warning', "File does not exist.");
+        return Yii::$app->session->setFlash('warning', "File does not exist.");
     }
 
-    public function createZip(){
+    /**
+     * Creates zip archive of the File model result.
+     */
+    public function createZip()
+    {
         $path = Url::to('@webroot/result/') . $this->name;
         $zipName = $this->name . '.zip';
 
         shell_exec('cd '.$path.' && zip -r '.$zipName.' .');
     }
 
-    public function download() {
+    /**
+     * Joins functions.
+     */
+    public function download()
+    {
         $this->createZip();
         $this->sendFile();
     }
 
-    public function getJson() {
+    /**
+     * Gets path to json file.
+     */
+    public function getJson()
+    {
         return Url::to('@web/api/image/json/'.$this->id, true);
     }
-//
-//    public function getImage()
-//    {
-//        return $this->hasMany(Image::className(), ['file_id' => 'id']);
-//    }
-//
-//    public function getImageUrl() {
-//        $img = '';
-//        foreach ($this->image as $image) {
-//            $img .= $image->url . ', ';
-//        }
-//        $img = rtrim($img, ', ');
-//        return $img;
-//    }
 
+    /**
+     * @inheritdoc
+     */
     public function beforeSave($insert)
     {
         if (parent::beforeSave($insert)) {
@@ -228,10 +265,5 @@ class File extends ActiveRecord
         } else {
             return false;
         }
-    }
-
-    public function afterSave($insert, $changedAttributes)
-    {
-        parent::afterSave($insert, $changedAttributes);
     }
 }

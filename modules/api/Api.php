@@ -2,10 +2,12 @@
 
 namespace app\modules\api;
 
+use yii\gii\Module;
+
 /**
  * api module definition class
  */
-class Api extends \yii\base\Module
+class Api extends Module
 {
     /**
      * @inheritdoc
@@ -18,7 +20,5 @@ class Api extends \yii\base\Module
     public function init()
     {
         parent::init();
-
-        // custom initialization code goes here
     }
 }

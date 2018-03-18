@@ -1,5 +1,7 @@
 <?php
 
+use yii\helpers\Html;
+
 /* @var $this yii\web\View */
 
 $this->title = 'My Yii Application';
@@ -11,6 +13,6 @@ $this->title = 'My Yii Application';
 
         <p class="lead">You can convert your PDF to HTML slider.</p>
 
-        <p><a class="btn btn-lg btn-success" href="/file/upload">Convert</a></p>
+        <?= Html::a('Convert', ['file/upload'], ['class' => 'btn btn-primary']) ?>
     </div>
 </div>

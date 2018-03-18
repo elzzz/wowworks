@@ -2,7 +2,6 @@
 
 namespace app\modules\api\models;
 
-use Yii;
 use app\models\File;
 
 /**
@@ -36,7 +35,8 @@ class Image extends \yii\db\ActiveRecord
             [['file_id'], 'default', 'value' => null],
             [['file_id', 'number'], 'integer'],
             [['url', 'path'], 'string'],
-            [['file_id'], 'exist', 'skipOnError' => true, 'targetClass' => File::className(), 'targetAttribute' => ['file_id' => 'id']],
+            [['file_id'], 'exist', 'skipOnError' => true, 'targetClass' => File::className(),
+                'targetAttribute' => ['file_id' => 'id']],
         ];
     }
 
