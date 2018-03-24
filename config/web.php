@@ -58,10 +58,6 @@ $config = [
             ],
         ],
         'db' => $db,
-        'queue' => [
-            'class' => \yii\queue\file\Queue::class,
-            'path' => '@runtime/queue',
-        ],
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
