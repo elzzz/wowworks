@@ -41,7 +41,9 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "app\\modules\\api\\": "modules/api/"
+            "app\\modules\\api\\": "modules/api/",
+            "app\\models\\": "models/"
+            "app\\controllers\\": "controllers/"
         }
     },
     "scripts": {
